@@ -25,22 +25,6 @@ def is_string_a_valid_url(string):
         return False
 
 
-def is_string_a_valid_ip(string):
-    """
-    This function add some validation for our user input. This one is for the case when we expect an IP-address (v4)
-    to be entered.
-    The idea of the regular expression is from here: https://a-panov.ru/регулярные-выражения-проверка-ip-на-кор/
-    (in Russian)
-    :param string: a string we want to check
-    :return: True or False
-    """
-    ip_regexp = '^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
-    if re.match(ip_regexp, string):
-        return True
-    else:
-        return False
-
-
 def ask_for_url():
     """
     The first requirement for this was to read a user's input.
@@ -48,6 +32,7 @@ def ask_for_url():
     we are going to make a simple sanity check.
 
     It also seems convenient to automatically add an 'https://' prefix if there is no protocol specified.
+    and add '/robots.txt'
 
     :return: a url if everything went well. Returns 1 in case of errors.
     """
@@ -56,7 +41,7 @@ def ask_for_url():
     if not url_entered.startswith('http') and not url_entered[0].isdigit():
         url_entered = "https://" + url_entered
 
-    if (is_string_a_valid_url(url_entered) == True) or (is_string_a_valid_ip(url_entered) == True):
+    if is_string_a_valid_url(url_entered) and not url_entered.endswith('/robots.txt'):
         url_entered += '/robots.txt'
         return url_entered
     else:
